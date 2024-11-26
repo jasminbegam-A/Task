@@ -17,12 +17,15 @@ function CardView() {
   };
 
   const handleDelete = async (id) => {
-    await deleteProduct(id);
-    fetchData();
+    if (window.confirm("Are you sure you want to delete this product?")) {
+      await deleteProduct(id);
+      fetchData();
+      alert('Product deleted successfully');
+    }
   };
 
   const handleEdit = (product) => {
-    setEditingProduct(product);  // Set the product to be edited
+    setEditingProduct(product);
     setIsEditing(true);
   };
 
@@ -32,9 +35,14 @@ function CardView() {
     fetchData();
   };
 
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditingProduct(null);
+  };
+
   return (
     <div>
-      <ProductForm existingProduct={editingProduct} onSuccess={handleSuccess} />
+      <ProductForm existingProduct={editingProduct} onSuccess={handleSuccess} onCancelEdit={handleCancelEdit} />
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {products.map(product => (
           <div key={product._id} className="border rounded shadow p-4">

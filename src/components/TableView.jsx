@@ -17,8 +17,11 @@ function TableView() {
   };
 
   const handleDelete = async (id) => {
-    await deleteProduct(id);
-    fetchData();
+    if (window.confirm("Are you sure you want to delete this product?")) {
+      await deleteProduct(id);
+      fetchData();
+      alert('Product deleted successfully');
+    }
   };
 
   const handleEdit = (product) => {
@@ -32,9 +35,14 @@ function TableView() {
     fetchData();
   };
 
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditingProduct(null);
+  };
+
   return (
     <div>
-      <ProductForm existingProduct={editingProduct} onSuccess={handleSuccess} />
+      <ProductForm existingProduct={editingProduct} onSuccess={handleSuccess} onCancelEdit={handleCancelEdit} />
       <table className="min-w-full bg-white border">
         <thead>
           <tr>
